@@ -20,7 +20,12 @@ public class SecretService {
 
     private Map<String, String> secrets = new HashMap<>();
 
-    private SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter() {
+    private final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter() {
+
+        //Using the access to the JwsHeader, I can inspect the algorithm and return the proper byte array for the secret that was used to sign the JWT. Now, JJWT will verify that the JWT has not been tampered with using this byte array as the key.
+        //
+        //If I remove the last character of the passed in JWT (which is part of the signature), this is the response:
+
         @Override
         public byte[] resolveSigningKeyBytes(JwsHeader header, Claims claims) {
             return TextCodec.BASE64.decode(secrets.get(header.getAlgorithm()));

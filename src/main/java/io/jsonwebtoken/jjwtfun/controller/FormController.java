@@ -13,12 +13,13 @@ public class FormController {
 
     @RequestMapping(value = "/jwt-csrf-form", method = GET)
     public String csrfFormGet() {
+        System.out.println("Let's see whem this gets printed");
         return "jwt-csrf-form";
     }
 
     @RequestMapping(value = "/jwt-csrf-form", method = POST)
     public String csrfFormPost(@RequestParam(name = "_csrf") String csrf, Model model) {
-        model.addAttribute("csrf", csrf);
+//        model.addAttribute("csrf", csrf);
         return "jwt-csrf-form-result";
     }
 

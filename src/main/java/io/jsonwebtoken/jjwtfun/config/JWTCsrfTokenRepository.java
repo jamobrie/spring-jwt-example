@@ -20,7 +20,7 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
         .concat(".CSRF_TOKEN");
 
     private static final Logger log = LoggerFactory.getLogger(JWTCsrfTokenRepository.class);
-    private byte[] secret;
+    private final byte[] secret;
 
     public JWTCsrfTokenRepository(byte[] secret) {
         this.secret = secret;
@@ -43,7 +43,11 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
             .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
 
-        return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", token);
+        DefaultCsrfToken defaultCsrfToken =  new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", token);
+
+        System.out.println("The generated token is the following, which is then used in the POST call. And has an expiry of 30 seconds " + token);
+
+        return defaultCsrfToken;
     }
 
     @Override
@@ -67,4 +71,5 @@ public class JWTCsrfTokenRepository implements CsrfTokenRepository {
         }
         return (CsrfToken) session.getAttribute(DEFAULT_CSRF_TOKEN_ATTR_NAME);
     }
+
 }

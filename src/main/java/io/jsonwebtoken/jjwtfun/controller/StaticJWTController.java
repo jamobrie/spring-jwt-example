@@ -20,6 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 public class StaticJWTController extends BaseController {
 
+    //This custom service is very powerful! 
     @Autowired
     SecretService secretService;
 
@@ -43,7 +44,13 @@ public class StaticJWTController extends BaseController {
 
         Jws<Claims> jws = Jwts.parser()
             .setSigningKeyResolver(secretService.getSigningKeyResolver())
-            .parseClaimsJws(jwt);
+            .parseClaimsJws(jwt); // parseClaimsJws -> verifies that the passed in jwt pattern is  -> "JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.",
+        //So it's quite tamper proof in that regard!
+
+        //we expect the incoming string to be a signed JWT (a JWS). And, we are using the same secret that was used to sign the JWT in parsing it.
+        // parseClaimsJws(jwt) ---> parses the claims from the JWT. Internally, it is verifying the signature and it will throw an exception if the signature is invalid
+
+
 
         return new JwtResponse(jws);
     }
@@ -52,7 +59,7 @@ public class StaticJWTController extends BaseController {
     public JwtResponse parserEnforce(@RequestParam String jwt) throws UnsupportedEncodingException {
         Jws<Claims> jws = Jwts.parser()
             .requireIssuer("Stormpath")
-            .require("hasMotorcycle", true)
+            .require("hasMotorcycle", true)//Assert that certain claims are required in the JWT request ... MissingClaimException will be in the response
             .setSigningKeyResolver(secretService.getSigningKeyResolver())
             .parseClaimsJws(jwt);
 
