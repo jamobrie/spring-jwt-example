@@ -1,3 +1,13 @@
+#My Notes
+Cross Site Request Forgery (CSRF)---> a security vulnerability whereby a malicious website tricks you into submitting requests to a website that you have established trust with. One of the common remedies for this is to implement a synchronizer token pattern.
+synchronizer token pattern ---> Is built into Spring Security. By default, the token that Spring Security uses is a “dumb” token.
+By default, all paths require authentication and all POST endpoints require CSRF tokens. We are going to relax that a bit so that what we've built so far still works.
+
+Technically, a JWT that's been cryptographically signed is called a JWS. JWTs can also be encrypted and would then be called a JWE. (In actual practice, the term JWT is used to describe JWEs and JWSs.)
+
+# Guide for this is here:
+https://www.baeldung.com/java-json-web-tokens-jjwt
+
 ## JWT Fun
 
 This module contains articles about JJWT.
